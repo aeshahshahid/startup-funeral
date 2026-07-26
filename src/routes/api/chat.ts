@@ -31,7 +31,7 @@ export const Route = createFileRoute("/api/chat")({
         const result = streamText({
           model: gateway("google/gemini-3.5-flash"),
           system: `${SYSTEM}\n\n=== FOUNDER'S CASE FILE ===\n${context ?? "(no report context)"}\n=== END CASE FILE ===${topic ? `\n\nCurrent focus topic: ${topic}.` : ""}`,
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
         });
 
         return result.toUIMessageStreamResponse({ originalMessages: messages });
