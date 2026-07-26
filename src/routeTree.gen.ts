@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SampleReportRouteImport } from './routes/sample-report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -20,6 +21,11 @@ import { Route as AuthenticatedInvestigationNewRouteImport } from './routes/_aut
 import { Route as AuthenticatedCaseIdIndexRouteImport } from './routes/_authenticated/case.$id.index'
 import { Route as AuthenticatedCaseIdStrategyRouteImport } from './routes/_authenticated/case.$id.strategy'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SampleReportRoute = SampleReportRouteImport.update({
   id: '/sample-report',
   path: '/sample-report',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sample-report': typeof SampleReportRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/investigation/new': typeof AuthenticatedInvestigationNewRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sample-report': typeof SampleReportRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/investigation/new': typeof AuthenticatedInvestigationNewRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sample-report': typeof SampleReportRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/investigation/new': typeof AuthenticatedInvestigationNewRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/sample-report'
+    | '/sitemap.xml'
     | '/dashboard'
     | '/api/chat'
     | '/investigation/new'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/sample-report'
+    | '/sitemap.xml'
     | '/dashboard'
     | '/api/chat'
     | '/investigation/new'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/sample-report'
+    | '/sitemap.xml'
     | '/_authenticated/dashboard'
     | '/api/chat'
     | '/_authenticated/investigation/new'
@@ -151,11 +163,19 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SampleReportRoute: typeof SampleReportRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sample-report': {
       id: '/sample-report'
       path: '/sample-report'
@@ -252,6 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SampleReportRoute: SampleReportRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
