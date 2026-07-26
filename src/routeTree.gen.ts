@@ -17,6 +17,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedInvestigationNewRouteImport } from './routes/_authenticated/investigation.new'
+import { Route as AuthenticatedCaseIdIndexRouteImport } from './routes/_authenticated/case.$id.index'
+import { Route as AuthenticatedCaseIdStrategyRouteImport } from './routes/_authenticated/case.$id.strategy'
 
 const SampleReportRoute = SampleReportRouteImport.update({
   id: '/sample-report',
@@ -58,6 +60,18 @@ const AuthenticatedInvestigationNewRoute =
     path: '/investigation/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCaseIdIndexRoute =
+  AuthenticatedCaseIdIndexRouteImport.update({
+    id: '/case/$id/',
+    path: '/case/$id/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCaseIdStrategyRoute =
+  AuthenticatedCaseIdStrategyRouteImport.update({
+    id: '/case/$id/strategy',
+    path: '/case/$id/strategy',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/investigation/new': typeof AuthenticatedInvestigationNewRoute
+  '/case/$id/strategy': typeof AuthenticatedCaseIdStrategyRoute
+  '/case/$id/': typeof AuthenticatedCaseIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,6 +92,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/investigation/new': typeof AuthenticatedInvestigationNewRoute
+  '/case/$id/strategy': typeof AuthenticatedCaseIdStrategyRoute
+  '/case/$id': typeof AuthenticatedCaseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,6 +105,8 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/investigation/new': typeof AuthenticatedInvestigationNewRoute
+  '/_authenticated/case/$id/strategy': typeof AuthenticatedCaseIdStrategyRoute
+  '/_authenticated/case/$id/': typeof AuthenticatedCaseIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +118,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/chat'
     | '/investigation/new'
+    | '/case/$id/strategy'
+    | '/case/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,6 +129,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/chat'
     | '/investigation/new'
+    | '/case/$id/strategy'
+    | '/case/$id'
   id:
     | '__root__'
     | '/'
@@ -117,6 +141,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/api/chat'
     | '/_authenticated/investigation/new'
+    | '/_authenticated/case/$id/strategy'
+    | '/_authenticated/case/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,17 +212,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInvestigationNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/case/$id/': {
+      id: '/_authenticated/case/$id/'
+      path: '/case/$id'
+      fullPath: '/case/$id/'
+      preLoaderRoute: typeof AuthenticatedCaseIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/case/$id/strategy': {
+      id: '/_authenticated/case/$id/strategy'
+      path: '/case/$id/strategy'
+      fullPath: '/case/$id/strategy'
+      preLoaderRoute: typeof AuthenticatedCaseIdStrategyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedInvestigationNewRoute: typeof AuthenticatedInvestigationNewRoute
+  AuthenticatedCaseIdStrategyRoute: typeof AuthenticatedCaseIdStrategyRoute
+  AuthenticatedCaseIdIndexRoute: typeof AuthenticatedCaseIdIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedInvestigationNewRoute: AuthenticatedInvestigationNewRoute,
+  AuthenticatedCaseIdStrategyRoute: AuthenticatedCaseIdStrategyRoute,
+  AuthenticatedCaseIdIndexRoute: AuthenticatedCaseIdIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
