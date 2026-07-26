@@ -14,7 +14,145 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      investigations: {
+        Row: {
+          answers: Json
+          country: string | null
+          created_at: string
+          current_version: number
+          health_score: number | null
+          id: string
+          industry: string | null
+          stage: string | null
+          startup_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          country?: string | null
+          created_at?: string
+          current_version?: number
+          health_score?: number | null
+          id?: string
+          industry?: string | null
+          stage?: string | null
+          startup_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          country?: string | null
+          created_at?: string
+          current_version?: number
+          health_score?: number | null
+          id?: string
+          industry?: string | null
+          stage?: string | null
+          startup_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          content: Json
+          created_at: string
+          health_score: number | null
+          id: string
+          investigation_id: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          investigation_id: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          investigation_id?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_investigation_id_fkey"
+            columns: ["investigation_id"]
+            isOneToOne: false
+            referencedRelation: "investigations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      strategy_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          investigation_id: string
+          role: string
+          topic: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          investigation_id: string
+          role: string
+          topic?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          investigation_id?: string
+          role?: string
+          topic?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strategy_messages_investigation_id_fkey"
+            columns: ["investigation_id"]
+            isOneToOne: false
+            referencedRelation: "investigations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
