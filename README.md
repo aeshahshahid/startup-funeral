@@ -6,16 +6,16 @@
 
 # Table of Contents
 
-- The Problem
-- The Idea
-- Live App
-- Features
-- The AI Feature
-- Tech Stack
-- Screenshots
-- How to Run Locally
-- Future Improvements
-- Author
+- [The Problem](#the-problem)
+- [The Idea](#the-idea)
+- [Live App](#live-app)
+- [Features](#features)
+- [The AI Feature](#the-ai-feature)
+- [Tech Stack](#tech-stack)
+- [Screenshots](#screenshots)
+- [How to Run Locally](#how-to-run-locally)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
 
 ---
 
