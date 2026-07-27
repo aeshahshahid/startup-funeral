@@ -54,11 +54,11 @@ export function buildCaseFilePdf(opts: {
   }
 
   function heading(value: string) {
-    ensure(46);
-    space(10);
+    ensure(52);
+    space(16);
     doc.setDrawColor(ACCENT);
     doc.setLineWidth(2);
-    doc.line(MARGIN, y - 10, MARGIN + 28, y - 10);
+    doc.line(MARGIN, y - 16, MARGIN + 28, y - 16);
     text(value.toUpperCase(), { size: 12, style: "bold", gap: 8 });
   }
 
