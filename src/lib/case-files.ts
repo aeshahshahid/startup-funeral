@@ -58,6 +58,16 @@ export async function deleteInvestigation(id: string) {
   if (error) throw error;
 }
 
+export async function listStrategyMessages(investigationId: string) {
+  const { data, error } = await supabase
+    .from("strategy_messages")
+    .select("role, content, created_at")
+    .eq("investigation_id", investigationId)
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
 export async function duplicateInvestigation(inv: Investigation) {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
