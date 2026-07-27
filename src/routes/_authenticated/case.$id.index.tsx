@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowLeft, MessagesSquare, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowLeft, Download, Loader2, MessagesSquare, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { ReportView } from "@/components/report-view";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getInvestigation, listReports } from "@/lib/case-files";
+import { getInvestigation, listReports, listStrategyMessages } from "@/lib/case-files";
 import { severityColor } from "@/lib/report";
 
 export const Route = createFileRoute("/_authenticated/case/$id/")({
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/_authenticated/case/$id/")({
 function CaseFile() {
   const { id } = Route.useParams();
   const [versionId, setVersionId] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   const { data: investigation, isLoading: loadingCase } = useQuery({
     queryKey: ["investigation", id],
@@ -39,6 +41,28 @@ function CaseFile() {
 
   const selected = reports?.find((r) => r.id === versionId) ?? reports?.[0] ?? null;
   const loading = loadingCase || loadingReports;
+
+  async function exportPdf() {
+    if (!investigation) return;
+    setExporting(true);
+    try {
+      const [{ buildCaseFilePdf, fileNameFor }, messages] = await Promise.all([
+        import("@/lib/export-pdf"),
+        listStrategyMessages(id),
+      ]);
+      const doc = buildCaseFilePdf({
+        investigation,
+        report: selected?.content ?? null,
+        version: selected?.version ?? null,
+        messages,
+      });
+      doc.save(fileNameFor(investigation.startup_name, selected?.version ?? null));
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not export PDF");
+    } finally {
+      setExporting(false);
+    }
+  }
 
   return (
     <AppShell>
@@ -65,6 +89,19 @@ function CaseFile() {
             )}
           </div>
           <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              className="rounded-lg bg-elevated"
+              onClick={exportPdf}
+              disabled={exporting || !investigation}
+            >
+              {exporting ? (
+                <Loader2 className="mr-1.5 size-4 animate-spin" />
+              ) : (
+                <Download className="mr-1.5 size-4" />
+              )}
+              Export PDF
+            </Button>
             <Button asChild variant="outline" className="rounded-lg bg-elevated">
               <Link to="/investigation/new" search={{ caseId: id }}>
                 <RefreshCw className="mr-1.5 size-4" /> Run Updated Investigation
