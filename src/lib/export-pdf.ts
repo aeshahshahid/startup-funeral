@@ -44,7 +44,7 @@ export function buildCaseFilePdf(opts: {
     doc.setFont("helvetica", style);
     doc.setFontSize(size);
     doc.setTextColor(color);
-    const lines = doc.splitTextToSize(value, width - indent) as string[];
+    const lines = doc.splitTextToSize(latin1(value), width - indent) as string[];
     for (const line of lines) {
       ensure(size + 4);
       doc.text(line, MARGIN + indent, y);
@@ -67,7 +67,7 @@ export function buildCaseFilePdf(opts: {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10.5);
       doc.setTextColor(ACCENT);
-      const lines = doc.splitTextToSize(item, width - 16) as string[];
+      const lines = doc.splitTextToSize(latin1(item), width - 16) as string[];
       ensure(14);
       doc.text(marker, MARGIN, y);
       doc.setTextColor(INK);
@@ -182,13 +182,13 @@ export function buildCaseFilePdf(opts: {
       text(e.role, { style: "bold", gap: 2 });
       text(e.opinion);
       text(e.reasoning, { color: MUTED });
-      bullets(e.recommendations, "→");
+      bullets(e.recommendations, "-");
     });
 
     heading("Recovery strategy");
     text(report.recoveryStrategy);
     heading("Quick wins");
-    bullets(report.quickWins, "✓");
+    bullets(report.quickWins, "+");
     heading("30-day plan");
     bullets(report.plan30);
     heading("60-day plan");
@@ -198,7 +198,7 @@ export function buildCaseFilePdf(opts: {
 
     if (report.projectedImprovement) {
       heading("Projected improvement");
-      text(`${report.healthScore} → ${report.projectedImprovement.score}`, { style: "bold", gap: 3 });
+      text(`${report.healthScore} -> ${report.projectedImprovement.score}`, { style: "bold", gap: 3 });
       text(report.projectedImprovement.summary, { color: MUTED });
     }
   } else {
@@ -238,6 +238,18 @@ export function buildCaseFilePdf(opts: {
   }
 
   return doc;
+}
+
+function latin1(value: string) {
+  return value
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/\u2192/g, "->")
+    .replace(/[\u2022\u25CF]/g, "-")
+    .replace(/\u2713/g, "+")
+    .replace(/\u2026/g, "...")
+    .replace(/[^\x00-\xFF]/g, "");
 }
 
 function stripMarkdown(value: string) {
