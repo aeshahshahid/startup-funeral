@@ -68,11 +68,6 @@ export async function listStrategyMessages(investigationId: string) {
   return data ?? [];
 }
 
-async function _deleteInvestigationLegacy(id: string) {
-  const { error } = await supabase.from("investigations").delete().eq("id", id);
-  if (error) throw error;
-}
-
 export async function duplicateInvestigation(inv: Investigation) {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
